@@ -12,11 +12,11 @@
             <input class="border rounded w-full py-2 px-3" type="password" id="password" name="password" placeholder="Password" />
           </div>
           <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Login</button>
-  
         </form>
-        <p class="register-message">
-        Do not have an account? <router-link to="/register">Register</router-link>
-      </p>
+        <p class="mt-4 text-gray-600">
+          Don't have an account? <router-link to="/register" class="text-blue-500 hover:underline">Register</router-link>
+        </p>
       </div>
     </div>
   </template>
+  
