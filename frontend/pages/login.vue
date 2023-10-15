@@ -14,7 +14,9 @@
           <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Login</button>
   
         </form>
+        <p class="register-message">
+        Do not have an account? <router-link to="/register">Register</router-link>
+      </p>
       </div>
     </div>
   </template>
-  
