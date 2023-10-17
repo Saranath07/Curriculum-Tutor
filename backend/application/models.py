@@ -22,6 +22,7 @@ class Questions(db.Model):
 
 class Performance(db.Model):
     __tablename__ = 'performance'
+    perf_id = db.Column(db.Integer(),primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey(Users.id, ondelete='CASCADE'))
     easy = db.Column(db.Integer())
     medium = db.Column(db.Integer())
