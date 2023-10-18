@@ -10,7 +10,7 @@
         <!-- Navigation Links -->
         <ul class="flex items-center space-x-8 text-white">
           <li><router-link to="/home">Home</router-link></li>
-          <li><router-link to="/questions">Topics</router-link></li>
+          <li><router-link to="/topics">Topics</router-link></li>
           <li><router-link to="/performance">Your Performance</router-link></li>
           <li><a href="#">Logout</a></li>
         </ul>
