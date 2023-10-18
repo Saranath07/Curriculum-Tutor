@@ -59,15 +59,18 @@ def create_app():
 
 app, api = create_app()
 
-from application.login import *
+
 
 app, api = create_app()
-
+app.app_context().push()   
 cors = CORS(app) # Allow cross-origin requests
 api = Api(app)
 
+
 jwt = JWTManager(app)
+from application.login import *
 with app.app_context():
+    
     db.create_all()
 
 
