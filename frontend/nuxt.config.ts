@@ -5,5 +5,12 @@ export default defineNuxtConfig({
     "@nuxtjs/tailwindcss",
     "@pinia/nuxt",
     "@nuxt/content"
-  ]
+  ],
+  content: {
+    highlight: {
+      // Theme used in all color schemes.
+      theme: 'monokai',
+      preload: ['python']
+    }
+  }
 })

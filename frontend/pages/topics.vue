@@ -1,6 +1,5 @@
 <template>
     <div>
-      <NavBar />
       <div class="min-h-screen flex items-center justify-center">
         <div class="flex flex-col items-center" style="margin-top: -30px;">
           <div v-for="(topic, topicIndex) in topics" :key="topicIndex">
