@@ -5,13 +5,14 @@ from application.config import LocalDevelopmentConfig
 from flask_cors import CORS
 from application.database import db
 
+
 from flask_jwt_extended import JWTManager
-from application.models import *
+from application.models import Users
 
 
 
-CELERY_BROKER_URL = "redis://localhost:6379/1"
-CELERY_RESULT_BACKEND = "redis://localhost:6379/2"
+# CELERY_BROKER_URL = "redis://localhost:6379/1"
+# CELERY_RESULT_BACKEND = "redis://localhost:6379/2"
 app = None
 api = None
 celery = None
@@ -43,6 +44,7 @@ def create_app():
     app.app_context().push()   
     
     # Create celery   
+    # celery = workers.celery
 
     # Update with configuration
     # celery.conf.update(
@@ -51,13 +53,13 @@ def create_app():
     # )
 
     # celery.Task = workers.ContextTask
-    app.app_context().push()
+    # app.app_context().push()
     print("Create app complete")
     return app, api
 
 app, api = create_app()
 
-
+from application.login import *
 
 app, api = create_app()
 
@@ -69,7 +71,7 @@ with app.app_context():
     db.create_all()
 
 
-from application.login import *
+
 
 
 
@@ -80,4 +82,4 @@ from application.login import *
 if __name__ == "__main__":
     # with app.app_context():
     #     db.create_all()
-        app.run(debug=True)
+    app.run(debug=True)

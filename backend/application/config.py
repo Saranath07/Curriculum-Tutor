@@ -24,4 +24,13 @@ class LocalDevelopmentConfig(Config):
     SMPTP_SERVER_PORT = 1025
     SENDER_ADDRESS = "email@example.com"
     SENDER_PASSWORD = ""
+
+class ProjectDevelopmentConfig(Config):
+    SQLALCHEMY_DB_DIR = os.path.join(basedir, "/db_directory")
+    SQLALCHEMY_DATABASE_URI = "sqlite:///" + os.path.join(SQLALCHEMY_DB_DIR, "project_example.sqlite3")
+    JWT_SECRET_KEY = 'super-secret' # Change this to your own secret key
+    SQLALCHEMY_TRACK_MODIFICATIONS = True
+    CORS_HEADERS = 'Content-Type' 
+    
+    DEBUG = False
     

@@ -12,11 +12,14 @@ from flask_jwt_extended import  jwt_required, create_access_token
 @app.route('/register/user',methods=["POST"])
 @cross_origin()
 def register_user():
+
     data = request.get_json()
     hash_pwd = generate_password_hash(data['password'],method = 'sha256')
-    new_user = Users(public_id = str(uuid.uuid4()),name = data['username'],password = hash_pwd,email=data['email'], role='user')
+    new_user = Users(public_id = str(uuid.uuid4()),user_name = data['username'],password = hash_pwd,email=data['email'], role='user')
     db.session.add(new_user)
     db.session.commit()
+    
+    
     return jsonify({"message":"User registered successfully"})
 
 @app.route('/register/admin',methods=["POST"])
@@ -24,7 +27,7 @@ def register_user():
 def register_admin():
     data = request.get_json()
     hash_pwd = generate_password_hash(data['password'],method = 'sha256')
-    new_user = Users(public_id = str(uuid.uuid4()),password = hash_pwd ,name = data['username'],email=data['email'],role='admin')
+    new_user = Users(public_id = str(uuid.uuid4()),password = hash_pwd ,user_name = data['username'],email=data['email'],role='admin')
     db.session.add(new_user)
     db.session.commit()
     return jsonify({"message":"Admin registered successfully"})
@@ -37,13 +40,13 @@ def login():
     # return {"hello" : data.get("username")}
     uname = data.get("username")
     password = data.get("password")
-    user = Users.query.filter_by(name=uname).first()
+    user = Users.query.filter_by(user_name=uname).first()
     
     if check_password_hash(user.password,password):
-        user.lastseen=time.time()
+        # user.lastseen=time.time()
         db.session.commit()
         access_token = create_access_token(identity= user.public_id,additional_claims  = {'role':user.role})
         return jsonify({"access_token":access_token, "username":user.name,"role":user.role}),200
     else:
-        return jsonify({"error":" "})
+        return jsonify({"error":" 124"})
 

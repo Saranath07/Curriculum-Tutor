@@ -3,6 +3,7 @@ from .database import db
 class Users(db.Model):
     __tablename__ = 'users'
     id = db.Column(db.Integer(), primary_key=True)
+    public_id = db.Column(db.Integer())
     user_name = db.Column(db.String())
     email = db.Column(db.String())
     role = db.Column(db.String())
@@ -12,7 +13,7 @@ class Users(db.Model):
 
 class Questions(db.Model):
     __tablename__ = 'questions'
-    id = db.Column(db.Integer(),primary_key=True)
+    ques_id = db.Column(db.Integer(),primary_key=True)
     question = db.Column(db.String())
     topic = db.Column(db.String())
     category = db.Column(db.String())
@@ -27,7 +28,7 @@ class Performance(db.Model):
     easy = db.Column(db.Integer())
     medium = db.Column(db.Integer())
     hard = db.Column(db.Integer())
-    performance = db.Column(db.String())
+    perf_comment = db.Column(db.String())
 
 
 
