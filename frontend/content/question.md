@@ -1,3 +1,5 @@
-# Quesion 1
 
-What will be the decimal value of $\dfrac{1}{2}$?
+
+
+# Question 1
+What is the decimal value of $\dfrac{1}{3}?$ 

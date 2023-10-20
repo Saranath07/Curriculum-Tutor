@@ -1,0 +1,1 @@
+pnpm add remark-math rehype-katex
