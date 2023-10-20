@@ -20,6 +20,8 @@ class LocalDevelopmentConfig(Config):
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     CORS_HEADERS = 'Content-Type' 
     WTF_CSRF_ENABLED = False
+    CASSANDRA_HOSTS = '127.0.0.1'
+    CASSANDRA_KEYSPACE = "cqlengine"
     CELERY_BROKER_URL = "redis://localhost:6379/1"
     CELERY_RESULT_BACKEND = "redis://localhost:6379/2"
     REDIS_URL = "redis://localhost:6379"
