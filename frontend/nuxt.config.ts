@@ -4,33 +4,29 @@ export default defineNuxtConfig({
   modules: [
     "@nuxtjs/tailwindcss",
     "@pinia/nuxt",
-    "@nuxt/content"
+    "@nuxtjs/mdc"
   ],
   app: {
     head: {
       link: [
         {
-          rel:"stylesheet", href:"https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+          rel: "stylesheet", href: "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"
+
         }
       ]
     }
   },
-  content: {
-    highlight: {
-      // Theme used in all color schemes.
-      theme: 'monokai',
-      preload: ['python']
+  mdc: {
+    rehypePlugins: {
+      'rehype-katex': {
+        options:
+        {
+          output: 'html'
+        }
+      },
     },
-    markdown: {
-      remarkPlugins: [
-        'remark-math'
-      ],
-      
-      rehypePlugins: [
-        // this next line here
-      ['rehype-katex', { output: 'html' }]
-
-      ]
+    remarkPlugins:  {
+      'remark-math': {},
     }
   }
 })
