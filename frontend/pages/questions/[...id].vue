@@ -22,6 +22,7 @@
             @click="showNumberLine" style="margin-left: 50px;"
           >
             Number Line
+
           </button>
 
           <button

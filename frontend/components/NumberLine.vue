@@ -6,7 +6,7 @@
         :class="{ 'highlighted': number == highLighted }"
         class="tick"
       >
-     
+     <!-- <div :value="1"></div> -->
       <MDC :value="number" tag="span" />
       </div>
     </div>
@@ -44,9 +44,9 @@
   .number-line {
     display: flex;
     justify-content: space-between;
-    border: 2px solid #007BFF;
-    border-radius: 10px;
-    background: linear-gradient(to right, #FF5733, #FFC300, #00CCAA, #0099FF, #B833FF);
+    border: 2px solid #00CCAA;
+   
+    background: linear-gradient(#00CCAA);
     padding: 10px;
   }
   
@@ -62,9 +62,11 @@
   }
   
   .highlighted {
-    background-color: #ffcc00;
+    background-color: #00CCAA;
     color: #333;
     font-weight: bold;
   }
   </style>
   
+
+ 
