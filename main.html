@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Line Chart</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        #number-line-chart {
+            margin-top: 20px;
+        }
+
+        .highlighted-point {
+            backgroundColor: yellow;
+            radius: 8;
+        }
+    </style>
+</head>
+<body>
+    <h1>Number Line Chart</h1>
+    
+    <div>
+        <label for="numerator">Numerator:</label>
+        <input type="number" id="numerator" min="0" step="1" value="0">
+        <label for="denominator">Denominator:</label>
+        <input type="number" id="denominator" min="1" step="1" value="10">
+    </div>
+
+    <canvas id="number-line-chart" width="400" height="100"></canvas>
+
+    <script>
+        // Get references to the canvas element and input fields
+        const numberLineCanvas = document.getElementById('number-line-chart');
+        const numeratorInput = document.getElementById('numerator');
+        const denominatorInput = document.getElementById('denominator');
+
+        // Function to update the number line
+        function updateNumberLine() {
+            const selectedNumerator = parseInt(numeratorInput.value);
+            const selectedDenominator = parseInt(denominatorInput.value);
+
+            // Calculate the number of data points for the chart
+            const dataPoints = [];
+
+            // Calculate the scale based on the numerator and denominator
+            const scale = Math.max(selectedNumerator, selectedDenominator);
+
+            // Set the chart's max value to the scale
+            const maxScale = scale + 1;
+
+            for (let i = 0; i <= maxScale; i++) {
+                const x = i;
+                dataPoints.push({ x, y: 0, highlighted: i === selectedNumerator || i === selectedDenominator });
+            }
+
+            // Create or update the number line chart
+            if (window.numberLineChart) {
+                // Update the existing chart with new data
+                window.numberLineChart.data.datasets[0].data = dataPoints;
+                window.numberLineChart.options.scales.x.max = maxScale;
+                window.numberLineChart.update();
+            } else {
+                // Create a new chart
+                window.numberLineChart = new Chart(numberLineCanvas, {
+                    type: 'line',
+                    data: {
+                        datasets: [{
+                            data: dataPoints,
+                            borderColor: 'black',
+                            borderWidth: 2,
+                            pointRadius: 5,
+                            pointBackgroundColor: (ctx) => ctx.raw.highlighted ? 'red' : 'blue',
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            x: {
+                                type: 'linear',
+                                position: 'bottom',
+                                min: 0,
+                                max: maxScale,
+                            },
+                            y: {
+                                display: false,
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // Add event listeners to update the number line when input values change
+        numeratorInput.addEventListener('input', updateNumberLine);
+        denominatorInput.addEventListener('input', updateNumberLine);
+
+        // Initialize the number line
+        updateNumberLine();
+    </script>
+</body>
+</html>

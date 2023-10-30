@@ -1,0 +1,88 @@
+<template>
+  <div>
+    <h1>Number Line Chart</h1>
+    
+    <div>
+      <label for="numerator">Numerator:</label>
+      <input type="number" v-model="numerator" min="0" step="1">
+      <label for="denominator">Denominator:</label>
+      <input type="number" v-model="denominator" min="1" step="1">
+    </div>
+
+    <canvas ref="numberLineCanvas" width="400" height="100"></canvas>
+  </div>
+</template>
+
+<script>
+import Chart from 'chart.js';
+
+export default {
+  data() {
+    return {
+      numerator: 0,
+      denominator: 10,
+      numberLineChart: null,
+    };
+  },
+  watch: {
+    numerator: 'updateNumberLine',
+    denominator: 'updateNumberLine',
+  },
+  methods: {
+    updateNumberLine() {
+      const selectedNumerator = parseInt(this.numerator);
+      const selectedDenominator = parseInt(this.denominator);
+
+      const dataPoints = [];
+      const scale = Math.max(selectedNumerator, selectedDenominator);
+      const maxScale = scale + 1;
+
+      for (let i = 0; i <= maxScale; i++) {
+        const x = i;
+        dataPoints.push({ x, y: 0, highlighted: i === selectedNumerator || i === selectedDenominator });
+      }
+
+      if (this.numberLineChart) {
+        this.numberLineChart.data.datasets[0].data = dataPoints;
+        this.numberLineChart.options.scales.x.max = maxScale;
+        this.numberLineChart.update();
+      } else {
+        this.numberLineChart = new Chart(this.$refs.numberLineCanvas, {
+          type: 'line',
+          data: {
+            datasets: [{
+              data: dataPoints,
+              borderColor: 'black',
+              borderWidth: 2,
+              pointRadius: 5,
+              pointBackgroundColor: (ctx) => ctx.raw.highlighted ? 'red' : 'blue',
+            }]
+          },
+          options: {
+            scales: {
+              x: {
+                type: 'linear',
+                position: 'bottom',
+                min: 0,
+                max: maxScale,
+              },
+              y: {
+                display: false,
+              }
+            }
+          }
+        });
+      }
+    }
+  },
+  mounted() {
+    this.updateNumberLine();
+  },
+};
+</script>
+
+<style>
+#number-line-chart {
+  margin-top: 20px;
+}
+</style>

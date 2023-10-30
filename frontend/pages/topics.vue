@@ -8,9 +8,9 @@
               
               <div v-if="isTopicExpanded(topic)" class="flex flex-wrap">
                 <div v-for="(question, index) in topic.questions" :key="index">
-                  <router-link :to="`/question/${question.id}`" class="w-5 h-5 flex items-center justify-center m-1 rounded-full" :class="question.attempted ? 'bg-green-500' : 'bg-red-500'">
+                  <nuxt-link :to="`/questions/${question.id}`" class="w-5 h-5 flex items-center justify-center m-1 rounded-full" :class="question.attempted ? 'bg-green-500' : 'bg-red-500'">
                     {{ index + 1 }}
-                  </router-link>
+                  </nuxt-link>
                 </div>
               </div>
             </div>
@@ -19,12 +19,11 @@
       </div>
     </div>
   </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        topics: [
+
+<script setup>
+const topics = ref([])
+const expandedTopics = ref([])
+topics.value = [
           {
             name: 'Topic 1',
             questions: [
@@ -51,23 +50,18 @@
               },
             ],
           },
-        ],
-        expandedTopics: [],
-      };
-    },
-    methods: {
-      toggleExpand(topic) {
+        ]
+        function toggleExpand(topic) {
         const index = this.expandedTopics.indexOf(topic);
         if (index === -1) {
           this.expandedTopics.push(topic);
         } else {
           this.expandedTopics.splice(index, 1);
         }
-      },
-      isTopicExpanded(topic) {
+      }
+      function isTopicExpanded(topic) {
         return this.expandedTopics.includes(topic);
-      },
-    },
-  };
-  </script>
+      }
+</script>
   
+ 

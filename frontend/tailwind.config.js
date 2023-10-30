@@ -2,7 +2,15 @@ import type { Config } from "tailwindcss";
 
 import Typography from "@tailwindcss/typography";
 
+
+
+
+
 export default <Partial<Config>> {
+  
+
+/** @type {import('tailwindcss').Config} */
+
   darkMode: "class",
   theme: {
     extend: {
@@ -42,6 +50,7 @@ export default <Partial<Config>> {
           },
         };
       },
+     
     },
   },
   plugins: [
