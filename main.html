@@ -1,100 +1,95 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Number Line Chart</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        #number-line-chart {
-            margin-top: 20px;
-        }
-
-        .highlighted-point {
-            backgroundColor: yellow;
-            radius: 8;
-        }
-    </style>
-</head>
-<body>
-    <h1>Number Line Chart</h1>
-    
+<template>
     <div>
+      <h1>Number Line Chart</h1>
+  
+      <div>
         <label for="numerator">Numerator:</label>
-        <input type="number" id="numerator" min="0" step="1" value="0">
+        <input type="number" v-model="numerator" min="0" step="10">
         <label for="denominator">Denominator:</label>
-        <input type="number" id="denominator" min="1" step="1" value="10">
+        <input type="number" v-model="denominator" min="1" step="10">
+      </div>
+  
+      <canvas id="number-line-chart" ref="numberLineCanvas" width="400" height="100"></canvas>
     </div>
-
-    <canvas id="number-line-chart" width="400" height="100"></canvas>
-
-    <script>
-        // Get references to the canvas element and input fields
-        const numberLineCanvas = document.getElementById('number-line-chart');
-        const numeratorInput = document.getElementById('numerator');
-        const denominatorInput = document.getElementById('denominator');
-
-        // Function to update the number line
-        function updateNumberLine() {
-            const selectedNumerator = parseInt(numeratorInput.value);
-            const selectedDenominator = parseInt(denominatorInput.value);
-
-            // Calculate the number of data points for the chart
-            const dataPoints = [];
-
-            // Calculate the scale based on the numerator and denominator
-            const scale = Math.max(selectedNumerator, selectedDenominator);
-
-            // Set the chart's max value to the scale
-            const maxScale = scale + 1;
-
-            for (let i = 0; i <= maxScale; i++) {
-                const x = i;
-                dataPoints.push({ x, y: 0, highlighted: i === selectedNumerator || i === selectedDenominator });
-            }
-
-            // Create or update the number line chart
-            if (window.numberLineChart) {
-                // Update the existing chart with new data
-                window.numberLineChart.data.datasets[0].data = dataPoints;
-                window.numberLineChart.options.scales.x.max = maxScale;
-                window.numberLineChart.update();
-            } else {
-                // Create a new chart
-                window.numberLineChart = new Chart(numberLineCanvas, {
-                    type: 'line',
-                    data: {
-                        datasets: [{
-                            data: dataPoints,
-                            borderColor: 'black',
-                            borderWidth: 2,
-                            pointRadius: 5,
-                            pointBackgroundColor: (ctx) => ctx.raw.highlighted ? 'red' : 'blue',
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            x: {
-                                type: 'linear',
-                                position: 'bottom',
-                                min: 0,
-                                max: maxScale,
-                            },
-                            y: {
-                                display: false,
-                            }
-                        }
-                    }
-                });
-            }
+  </template>
+  
+  <script>
+  import Chart from 'chart.js';
+  
+  export default {
+    data() {
+      return {
+        numerator: 0,
+        denominator: 10,
+        numberLineChart: null,
+      };
+    },
+    methods: {
+      updateNumberLine() {
+        const selectedNumerator = parseInt(this.numerator);
+        const selectedDenominator = parseInt(this.denominator);
+  
+        const dataPoints = [];
+        const scale = Math.max(selectedNumerator, selectedDenominator);
+        const maxScale = scale + 1;
+  
+        for (let i = 0; i <= maxScale; i++) {
+          const x = i;
+          dataPoints.push({ x, y: 0, highlighted: i === selectedNumerator || i === selectedDenominator });
         }
-
-        // Add event listeners to update the number line when input values change
-        numeratorInput.addEventListener('input', updateNumberLine);
-        denominatorInput.addEventListener('input', updateNumberLine);
-
-        // Initialize the number line
-        updateNumberLine();
-    </script>
-</body>
-</html>
+  
+        if (this.numberLineChart) {
+          this.numberLineChart.data.datasets[0].data = dataPoints;
+          this.numberLineChart.options.scales.x.max = maxScale;
+          this.numberLineChart.update();
+        } else {
+          this.numberLineChart = new Chart(this.$refs.numberLineCanvas, {
+            type: 'line',
+            data: {
+              datasets: [{
+                data: dataPoints,
+                borderColor: 'black',
+                borderWidth: 2,
+                pointRadius: 5,
+                pointBackgroundColor: (ctx) => ctx.raw.highlighted ? 'red' : 'blue',
+              }]
+            },
+            options: {
+              scales: {
+                x: {
+                  type: 'linear',
+                  position: 'bottom',
+                  min: 0,
+                  max: maxScale,
+                },
+                y: {
+                  display: false,
+                }
+              }
+            }
+          });
+        }
+      },
+    },
+    watch: {
+      numerator: 'updateNumberLine',
+      denominator: 'updateNumberLine',
+    },
+    mounted() {
+      this.updateNumberLine();
+    },
+  };
+  </script>
+  
+  <style>
+  /* Add your CSS styles here */
+  #number-line-chart {
+    margin-top: 20px;
+  }
+  
+  .highlighted-point {
+    background-color: yellow;
+    radius: 8;
+  }
+  </style>
+  
