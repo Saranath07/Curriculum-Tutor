@@ -3,7 +3,15 @@
       <div class="container mx-auto flex items-center justify-between">
         <!-- Profile Picture Placeholder -->
         <div class="flex items-center space-x-4">
-          <div class="w-12 h-12 bg-gray-300 rounded-full"></div>
+          <div>
+             <AvatarRoot class="bg-blackA3 inline-flex h-[45px] w-[45px] select-none items-center justify-center overflow-hidden rounded-full align-middle">
+      <AvatarImage
+        class="h-full w-full rounded-[inherit] object-cover"
+        src="https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?&w=128&h=128&dpr=2&q=80"
+        alt="Colm Tuite"
+      />
+      
+    </AvatarRoot></div>
           <div class="text-white font-semibold">User Name</div>
         </div>
         <div class = "lg:hidden">
@@ -21,6 +29,7 @@
   </template>
   
   <script setup lang="ts">
+  import { AvatarFallback, AvatarImage, AvatarRoot } from 'radix-vue'
   const navOpen = ref(false)
   const toggleNav = () => {navOpen.value = !navOpen.value}
   </script>

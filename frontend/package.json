@@ -20,9 +20,12 @@
     "rehype-katex": "^6.0.0",
     "remark-math": "^5.1.1",
     "vue": "^3.3.4",
-    "vue-router": "^4.2.5"
+    "vue-router": "^4.2.5",
+    "chartjs": "^0.3.24",
+    "@radix-ui/themes": "^2.0.0",
+    "radix-vue": "^1.0.2"
   },
   "dependencies": {
-    "@radix-ui/themes": "^2.0.0"
+    
   }
 }

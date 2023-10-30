@@ -1,72 +1,88 @@
 <template>
-    <div class="number-line">
-      <div
-        v-for="number in range"
-        :key="number"
-        :class="{ 'highlighted': number == highLighted }"
-        class="tick"
-      >
-     <!-- <div :value="1"></div> -->
-      <MDC :value="number" tag="span" />
-      </div>
+  <div>
+    <h1>Number Line Chart</h1>
+    
+    <div>
+      <label for="numerator">Numerator:</label>
+      <input type="number" v-model="numerator" min="0" step="1">
+      <label for="denominator">Denominator:</label>
+      <input type="number" v-model="denominator" min="1" step="1">
     </div>
-  </template>
-  
-  <script>
-  export default {
-    props: {
-      min: Number,
-      max: Number,
-      step: Number,
-      highlightedNumber: Number,
-    },
-    data(){
-        highLighted : '' 
-    },
-    computed: {
-      range() {
-        const range = [];
-        this.highLighted = `$\\dfrac{${this.highlightedNumber}}{${this.max}}$`
-        // `$\\dfrac{${this.highlightedNumber}{${this.max}}}$`
-        range.push(`$0$`)
-        for (let i = this.min+1; i <= this.max-1; i += this.step) {
-          
-          range.push(`$\\dfrac{${i}}{${this.max}}$`);
-        }
-        range.push(`$1$`)
-        return range;
-      },
-    },
-  };
-  </script>
-  
-  <style scoped>
-  .number-line {
-    display: flex;
-    justify-content: space-between;
-    border: 2px solid #00CCAA;
-   
-    background: linear-gradient(#00CCAA);
-    padding: 10px;
-  }
-  
-  .tick {
-    flex: 1;
-    text-align: center;
-    transition: background-color 0.3s;
-    background-color: #FFF;
-    color: #333;
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    padding: 10px 0;
-  }
-  
-  .highlighted {
-    background-color: #00CCAA;
-    color: #333;
-    font-weight: bold;
-  }
-  </style>
-  
 
- 
+    <canvas ref="numberLineCanvas" width="400" height="100"></canvas>
+  </div>
+</template>
+
+<script>
+import Chart from 'chart.js';
+
+export default {
+  data() {
+    return {
+      numerator: 0,
+      denominator: 10,
+      numberLineChart: null,
+    };
+  },
+  watch: {
+    numerator: 'updateNumberLine',
+    denominator: 'updateNumberLine',
+  },
+  methods: {
+    updateNumberLine() {
+      const selectedNumerator = parseInt(this.numerator);
+      const selectedDenominator = parseInt(this.denominator);
+
+      const dataPoints = [];
+      const scale = Math.max(selectedNumerator, selectedDenominator);
+      const maxScale = scale + 1;
+
+      for (let i = 0; i <= maxScale; i++) {
+        const x = i;
+        dataPoints.push({ x, y: 0, highlighted: i === selectedNumerator || i === selectedDenominator });
+      }
+
+      if (this.numberLineChart) {
+        this.numberLineChart.data.datasets[0].data = dataPoints;
+        this.numberLineChart.options.scales.x.max = maxScale;
+        this.numberLineChart.update();
+      } else {
+        this.numberLineChart = new Chart(this.$refs.numberLineCanvas, {
+          type: 'line',
+          data: {
+            datasets: [{
+              data: dataPoints,
+              borderColor: 'black',
+              borderWidth: 2,
+              pointRadius: 5,
+              pointBackgroundColor: (ctx) => ctx.raw.highlighted ? 'red' : 'blue',
+            }]
+          },
+          options: {
+            scales: {
+              x: {
+                type: 'linear',
+                position: 'bottom',
+                min: 0,
+                max: maxScale,
+              },
+              y: {
+                display: false,
+              }
+            }
+          }
+        });
+      }
+    }
+  },
+  mounted() {
+    this.updateNumberLine();
+  },
+};
+</script>
+
+<style>
+#number-line-chart {
+  margin-top: 20px;
+}
+</style>
