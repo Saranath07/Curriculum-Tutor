@@ -1,11 +1,6 @@
 from sqlalchemy.ext.declarative import declarative_base
-
-
-
-
-from flask.ext.cqlalchemy import CQLAlchemy
-
+from flask_sqlalchemy import SQLAlchemy
 
 engine = None
 Base = declarative_base()
-db = CQLAlchemy()
+db = SQLAlchemy()
