@@ -14,4 +14,4 @@ class UserApi(Resource):
         user = Users.query.filter_by(public_id = current_user).first()
         if user:
             return {"message":"You are logged in", "username":user.user_name, "role":user.role,},200
-        return {"message":"Janani is gundu"},404
+        return {"message":"Could not login"},404
