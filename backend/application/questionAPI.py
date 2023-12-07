@@ -11,6 +11,7 @@ import os
 
 
 qn_fields = {
+    "ques_id":fields.Integer,
    "topic": fields.String,
    "question": fields.String,
        "ques_img" : fields.String,
@@ -66,60 +67,47 @@ class QuestionsAPI(Resource):
         else:
             return {'message' : "You are not Authorized to perform this action"}, 400
         
-    # @jwt_required()
-    # def put(self,the_id):
-    #     current_user = get_jwt_identity()
-    #     token = request.headers.get('Authorization').split()[1]
-    #     decoded_token = decode_token(token)
+    @jwt_required()
+    def put(self,topic):
+        qn_id = topic
+        current_user = get_jwt_identity()
+        token = request.headers.get('Authorization').split()[1]
+        decoded_token = decode_token(token)
 
-    #     if 'admin' in decoded_token['role']:
-    #         data = request.get_json()
-    #         the_name = data['the_name']
+        if 'admin' in decoded_token['role']:
+            data = request.get_json()
+            quest = data['question']
 
-    #         sql = db.session.query(Theatre).filter(Theatre.the_id == the_id).first()
+            sql = db.session.query(Questions).filter(Questions.ques_id == qn_id).first()
 
-    #         if sql is None:
-    #             return jsonify({'message': 'Theatre not found'}), 404
+            if sql is None:
+                return jsonify({'message': 'Question not found'}), 404
 
-    #         sql.the_name = the_name
-    #         db.session.commit()
-    #     return "Theatre edited successfully"
+            sql.question = quest
+            db.session.commit()
+        return "Question edited successfully"
     
         
-    # def delete(self, the_id):
-    #     # return "Hello", 200
-    #     verify_jwt_in_request()
-    #     current_user = get_jwt_identity()
-    #     token = request.headers.get('Authorization').split()[1]  
+    def delete(self, topic):
+        qn_id = topic
+     
+        verify_jwt_in_request()
+        current_user = get_jwt_identity()
+        token = request.headers.get('Authorization').split()[1]  
         
 
-    #     decoded_token = decode_token(token)
+        decoded_token = decode_token(token)
        
-    #     if 'admin' in decoded_token['role']:
+        if 'admin' in decoded_token['role']:
           
-    #         the_mov = TheatreMovie.query.filter_by(the_id=the_id).all()
-    #         book = Bookings.query.all()
-    #         l = []
-    #         for i in the_mov:
-    #             l.append(i.id)
-    #         for j in book:
-    #             if j.movie_the_id in l:
-    #                 db.session.delete(j)
-    #         db.session.commit()
+            qn = Questions.query.filter_by(ques_id=qn_id).first()
+            if qn :
+                db.session.delete(qn)
+                db.session.commit()
+                return {'message' : "Deleted Successfully"}
+        return {'message' : "Not Deleted"}
+       
+       
      
             
 
-    #         theatre = Theatre.query.filter_by(the_id = the_id).first() 
-      
-         
-    #         db.session.delete(theatre)
-
-    #         db.session.commit()
-    #         the_mov = TheatreMovie.query.filter_by(the_id=the_id).all()
-    #         for k in the_mov:
-    #             db.session.delete(k)
-    #         db.session.commit()
-    #         return {"message" : "Theatre Deleted Successfully"}, 200
-    #     else:
-    #         return {'message' : "You are not Authorized to perform this action"}, 400
-    
