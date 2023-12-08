@@ -32,5 +32,14 @@ class Performance(db.Model):
     topic_id = db.Column(db.String())
     mastery = db.Column(db.String())
 
+# class indi_perf(db.Model):
+#     __tablename__ = "indi-perf"
+#     user_id = db.Column(db.String(), db.ForeignKey('users.id' , ondelete='CASCADE'))
+#     qn_id = db.Column(db.String(), db.ForeignKey('questions.ques_id' , ondelete='CASCADE'))
+#     select_options = db.Column(db.String())
+#     correct_options = db.Column(db.String())
+#     marks = db.Column(db.Integer())
+    
+
 # scores, user_d, topic_id, mastered
 # db.create_all()
