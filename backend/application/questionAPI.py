@@ -17,7 +17,7 @@ qn_fields = {
        "ques_img" : fields.String,
            "ques_type": fields.String,
            "options": fields.String,
-        "correct_options": fields.String
+        # "correct_options": fields.String
 
 }
 
@@ -28,16 +28,17 @@ class QuestionsAPI(Resource):
         current_user= get_jwt_identity()
 
         token = request.headers.get('Authorization').split()[1]
+        print(token)
         # bearer, token
         decoded_token = decode_token(token)
-        if 'admin' in  decoded_token['role']:
+        
         
             
-            qn = Questions.query.filter_by(topic= topic).all()
-            print(qn)
-            return qn
+        qn = Questions.query.filter_by(topic= topic).all()
+        print(qn)
+        return qn
       
-        return {'message' : "You are not Authorized to perform this action"}, 400
+        
     @jwt_required()
     def post(self):
         current_user = get_jwt_identity()

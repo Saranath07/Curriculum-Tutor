@@ -52,8 +52,47 @@
   </template>
   
   <script setup>
-  import { ref } from "vue";
-  import { useRoute, useRouter } from "vue-router";
+  import { ref, onMounted } from 'vue';
+import axios from 'axios';
+
+ 
+  
+axios.defaults.baseURL = 'http://localhost:5000';
+
+const topics = ref([]);
+const expandedTopics = ref([]);
+const userString = localStorage.getItem('user');
+  const user = JSON.parse(userString);
+
+  // Access the access token property from the user object
+  const token = user.access_token;
+  let ques = '';
+console.log(`Token : ${token}`)
+
+
+  try{
+  const response = await axios.get(`/api/questions/1`,  {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        
+      })
+      console.log(response.data[0].question)
+
+      ques = response.data[0].question
+    }catch(e){
+      console.log(e)
+    }
+
+
+console.log(ques)
+
+// onMounted(() => {
+//   // This code will be executed when the component is mounted
+//   console.log('Component is mounted!');
+//   getQuestions();
+// });
+
   
   const question = ref("");
   const route = useRoute();
@@ -93,7 +132,7 @@
   
   question.value = `# Question ${q_no.value} \
   
-  What does this fraction represent?`;
+  ${ques}`;
   
   const options = ref(["$\\dfrac{1}{2}$", "$\\dfrac{1}{4}$", "$\\dfrac{2}{5}$"]);
   </script>

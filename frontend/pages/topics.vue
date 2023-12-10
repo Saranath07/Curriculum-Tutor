@@ -1,67 +1,109 @@
 <template>
-    <div>
-      <div class="min-h-screen flex items-center justify-center">
-        <div class="flex flex-col items-center" style="margin-top: -30px;">
-          <div v-for="(topic, topicIndex) in topics" :key="topicIndex">
-            <div class="w-64 border rounded-lg shadow-md cursor-pointer p-4" @click="toggleExpand(topic)">
-              <div class="text-lg font-semibold mb-2">{{ topic.name }}</div>
-              
-              <div v-if="isTopicExpanded(topic)" class="flex flex-wrap">
-                <div v-for="(question, index) in topic.questions" :key="index">
-                  <nuxt-link :to="`/questions/${question.id}`" class="w-5 h-5 flex items-center justify-center m-1 rounded-full" :class="question.attempted ? 'bg-green-500' : 'bg-red-500'">
-                    {{ index + 1 }}
-                  </nuxt-link>
-                </div>
+  <div>
+    <div class="min-h-screen flex items-center justify-center">
+      <div class="flex flex-wrap items-center justify-center">
+        <div v-for="(topic, topicIndex) in topics" :key="topicIndex">
+          <div
+            class="w-64 border rounded-lg shadow-md cursor-pointer p-4 m-4"
+            @click="toggleExpand(topic)"
+          >
+            <div class="text-lg font-semibold mb-2">{{ topic.name }}</div>
+
+            <div v-if="isTopicExpanded(topic)" class="flex flex-wrap">
+              <div v-for="(question, index) in topic.questions" :key="index">
+                <nuxt-link
+                  :to="`/questions/${question.id}`"
+                  class="w-5 h-5 flex items-center justify-center m-1 rounded-full"
+                  :class="question.attempted ? 'bg-green-500' : 'bg-red-500'"
+                >
+                  {{ index + 1 }}
+                </nuxt-link>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </template>
+  </div>
+</template>
 
 <script setup>
-const topics = ref([])
-const expandedTopics = ref([])
-topics.value = [
-          {
-            name: 'Topic 1',
-            questions: [
-              {
-                id: 1,
-                attempted: true,
-              },
-              {
-                id: 2,
-                attempted: false,
-              },
-            ],
-          },
-          {
-            name: 'Topic 2',
-            questions: [
-              {
-                id: 3,
-                attempted: false,
-              },
-              {
-                id: 4,
-                attempted: true,
-              },
-            ],
-          },
-        ]
-        function toggleExpand(topic) {
-        const index = this.expandedTopics.indexOf(topic);
-        if (index === -1) {
-          this.expandedTopics.push(topic);
-        } else {
-          this.expandedTopics.splice(index, 1);
-        }
-      }
-      function isTopicExpanded(topic) {
-        return this.expandedTopics.includes(topic);
-      }
-</script>
-  
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+
  
+  
+axios.defaults.baseURL = 'http://localhost:5000';
+
+const topics = ref([]);
+const expandedTopics = ref([]);
+const userString = localStorage.getItem('user');
+  const user = JSON.parse(userString);
+
+  // Access the access token property from the user object
+  const token = user.access_token;
+
+console.log(`Token : ${token}`)
+
+async function getQuestions(){
+  try{
+  const response = await axios.get(`/api/questions/1`,  {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        
+      })
+      console.log(response.data[0])
+    }catch(e){
+      console.log(e)
+    }
+}
+
+
+
+onMounted(() => {
+  // This code will be executed when the component is mounted
+  console.log('Component is mounted!');
+  getQuestions();
+});
+
+topics.value = [
+  {
+    name: 'Topic 1',
+    questions: [
+      {
+        id: 1,
+        attempted: true,
+      },
+      {
+        id: 2,
+        attempted: false,
+      },
+    ],
+  },
+  {
+    name: 'Topic 2',
+    questions: [
+      {
+        id: 3,
+        attempted: false,
+      },
+      {
+        id: 4,
+        attempted: true,
+      },
+    ],
+  },
+];
+
+const toggleExpand = (topic) => {
+  const index = expandedTopics.value.indexOf(topic);
+  if (index === -1) {
+    expandedTopics.value.push(topic);
+  } else {
+    expandedTopics.value.splice(index, 1);
+  }
+};
+
+const isTopicExpanded = (topic) => expandedTopics.value.includes(topic);
+</script>

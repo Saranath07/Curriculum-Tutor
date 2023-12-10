@@ -72,7 +72,7 @@ with app.app_context():
 from application.login import *
 
 api.add_resource(UserApi,"/api/user_profile")
-api.add_resource(QuestionsAPI,"/api/question","/api/question/<topic>")
+api.add_resource(QuestionsAPI,"/api/questions","/api/questions/<topic>")
 
 if __name__ == "__main__":
     # with app.app_context():

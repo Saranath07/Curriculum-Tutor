@@ -12,7 +12,7 @@
       />
       
     </AvatarRoot></div>
-          <div class="text-white font-semibold">User Name</div>
+          <div class="text-white font-semibold">{{ username }}</div>
         </div>
         <div class = "lg:hidden">
           <button @click="toggleNav"><svg width="24" height="24" viewBox="0 0 24 24" class="stroke-white stroke-2"><path class="transition-all duration-500 ease-in-out" :d="navOpen ? `M 1 1 L 23 23 M 1 23 L 23 1 M 1 23 L 23 1` : `M 1 2 L 23 2 M 1 12 L 23 12 M 1 22 L 23 22`"></path></svg></button>
@@ -22,14 +22,41 @@
           <li><a href="/home">Home</a></li>
           <li><a href="/topics">Topics</a></li>
           <li><a href="/performance">Your Performance</a></li>
-          <li><a href="#">Logout</a></li>
+          <li><button @click="logout">LOGOUT</button></li>
         </ul>
       </div>
     </nav>
   </template>
   
   <script setup lang="ts">
-  import { AvatarFallback, AvatarImage, AvatarRoot } from 'radix-vue'
+  import { AvatarFallback, AvatarImage, AvatarRoot } from 'radix-vue';
+  import { ref } from "vue";
+  import { useRoute, useRouter } from "vue-router";
   const navOpen = ref(false)
+  const router = useRouter()
   const toggleNav = () => {navOpen.value = !navOpen.value}
+  // Assuming you want to retrieve an item with the key 'user'
+
+
+
+const username = ref('');
+
+// Check if the item exists
+const userString = localStorage.getItem('user');
+if (userString) {
+  // If it exists, parse the JSON string into an object
+  const user = JSON.parse(userString);
+  
+  // Update the value of the username ref
+  username.value = user.username;
+  
+  console.log('User:', user);
+} else {
+  console.log('User information not found in localStorage');
+}
+
+  function logout(){
+    localStorage.clear();
+    router.push("/login")
+  }
   </script>
