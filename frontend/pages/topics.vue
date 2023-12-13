@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="min-h-screen flex items-center justify-center">
+    <div v-if="!erString.value" class="min-h-screen flex items-center justify-center">
       <div class="flex flex-wrap items-center justify-center">
         <div v-for="(topic, topicIndex) in topics" :key="topicIndex">
           <div
@@ -24,6 +24,9 @@
         </div>
       </div>
     </div>
+    <div v-else>
+      <h1>Please Log in</h1>
+    </div>
   </div>
 </template>
 
@@ -31,32 +34,33 @@
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
 
- 
-  
 axios.defaults.baseURL = 'http://localhost:5000';
 
 const topics = ref([]);
 const expandedTopics = ref([]);
-const userString = localStorage.getItem('user');
-  const user = JSON.parse(userString);
+const userString = ref(null);
+userString.value = localStorage.getItem('user');
+console.log(userString.value);
+const error = ref('');
 
-  // Access the access token property from the user object
-  const token = user.access_token;
+const user = JSON.parse(userString.value);
 
-console.log(`Token : ${token}`)
+// Access the access token property from the user object
+const token = user.access_token;
 
-async function getQuestions(){
-  try{
-  const response = await axios.get(`/api/questions/1`,  {
-        headers: {
-          'Authorization': `Bearer ${token}`
-        },
-        
-      })
-      console.log(response.data[0])
-    }catch(e){
-      console.log(e)
-    }
+console.log(`Token : ${token}`);
+
+async function getQuestions() {
+  try {
+    const response = await axios.get(`/api/questions/1`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    console.log(response.data[0]);
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 
@@ -69,31 +73,33 @@ onMounted(() => {
 
 topics.value = [
   {
+    tid : 1,
     name: 'Topic 1',
     questions: [
       {
         id: 1,
-        attempted: true,
+        attempted: true
       },
       {
         id: 2,
-        attempted: false,
-      },
-    ],
+        attempted: false
+      }
+    ]
   },
   {
+    tid : 2,
     name: 'Topic 2',
     questions: [
       {
         id: 3,
-        attempted: false,
+        attempted: false
       },
       {
         id: 4,
-        attempted: true,
-      },
-    ],
-  },
+        attempted: true
+      }
+    ]
+  }
 ];
 
 const toggleExpand = (topic) => {

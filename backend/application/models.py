@@ -1,5 +1,5 @@
 from .database import db
-# from sqlalchemy import Column, Integer, String
+
 class Users(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
@@ -10,27 +10,50 @@ class Users(db.Model):
     password = db.Column(db.String())
     pic = db.Column(db.String())
     gender = db.Column(db.String())
+    # Establish a one-to-many relationship with AttemptedQuestions
+    attempted_questions = db.relationship('AttemptedQuestions', backref='user', lazy='dynamic')
 
+class Topics(db.Model):
+    __tablename__ = "topics"
+
+    id = db.Column(db.Integer(), primary_key=True)
+    topic_name = db.Column(db.String())
+    
+    
 class Questions(db.Model):
     __tablename__ = "questions"
     
-    ques_id = db.Column(db.Integer(),primary_key=True)
+    ques_id = db.Column(db.Integer(), primary_key=True)
     question = db.Column(db.String())
     ques_img = db.Column(db.Text())
-    topic = db.Column(db.String())
+    topic_id = db.Column(db.Integer, db.ForeignKey('topics.id', ondelete='CASCADE'))
     ques_type = db.Column(db.String())
     options = db.Column(db.String())
     correct_options = db.Column(db.String())
- 
+    # Establish a many-to-one relationship with Topics
+   
+    # Establish a one-to-many relationship with AttemptedQuestions
+    attempted_questions = db.relationship('AttemptedQuestions', backref='question', lazy='dynamic')
 
+    
+   
 
 class Performance(db.Model):
     __tablename__ = "performance"
     perf_id = db.Column(db.Integer, primary_key=True)
-    user_id = db.Column(db.String(), db.ForeignKey('users.id' , ondelete='CASCADE'))
+    user_id = db.Column(db.String(), db.ForeignKey('users.id', ondelete='CASCADE'))
     score = db.Column(db.Integer())
     topic_id = db.Column(db.String())
     mastery = db.Column(db.String())
+
+class AttemptedQuestions(db.Model):
+    __tablename__ = "attempted_questions"
+    attempt_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
+    ques_id = db.Column(db.Integer, db.ForeignKey('questions.ques_id', ondelete='CASCADE'))
+    attempted = db.Column(db.Boolean, default=False)
+    # Add a column to store the attempt status (True/False)
+
 
 # class indi_perf(db.Model):
 #     __tablename__ = "indi-perf"

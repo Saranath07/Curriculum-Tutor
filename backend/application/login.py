@@ -37,6 +37,8 @@ def login():
    
     email = data.get("email")
     password = data.get("password")
+
+    print(email)
     
     user = Users.query.filter_by(email=email).first()
     print(user)
