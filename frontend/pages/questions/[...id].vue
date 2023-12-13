@@ -67,6 +67,7 @@ const userString = localStorage.getItem('user');
   // Access the access token property from the user object
   const token = user.access_token;
   let ques = '';
+  let opt = '';
 console.log(`Token : ${token}`)
 
 
@@ -80,6 +81,7 @@ console.log(`Token : ${token}`)
       console.log(response.data[0].question)
 
       ques = response.data[0].question
+      opt = response.data[0].options
     }catch(e){
       console.log(e)
     }
@@ -129,12 +131,13 @@ console.log(ques)
       alert('No questions behind');
     }
   }
-  
+  let ops = opt.split(',')
+  console.log(ops)
   question.value = `# Question ${q_no.value} \
   
   ${ques}`;
   
-  const options = ref(["$\\dfrac{1}{2}$", "$\\dfrac{1}{4}$", "$\\dfrac{2}{5}$"]);
+  const options = ref(ops);
   </script>
   
   <style scoped>
