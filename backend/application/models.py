@@ -26,12 +26,7 @@ class Questions(db.Model):
     ques_id = db.Column(db.Integer(), primary_key=True)
     question = db.Column(db.String())
     ques_img = db.Column(db.Text())
-<<<<<<< HEAD
     topic_id = db.Column(db.Integer, db.ForeignKey('topics.id', ondelete='CASCADE'))
-=======
-    
-    topic = db.Column(db.String())
->>>>>>> 9d33ca78f50f4c1b213f097ef1dbf57012ebcd4d
     ques_type = db.Column(db.String())
     options = db.Column(db.String())
     correct_options = db.Column(db.String())
@@ -51,23 +46,13 @@ class Performance(db.Model):
     topic_id = db.Column(db.String())
     mastery = db.Column(db.String())
 
-<<<<<<< HEAD
 class AttemptedQuestions(db.Model):
     __tablename__ = "attempted_questions"
-    attempt_id = db.Column(db.Integer, primary_key=True)
+    attemptques_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
     ques_id = db.Column(db.Integer, db.ForeignKey('questions.ques_id', ondelete='CASCADE'))
     attempted = db.Column(db.Boolean, default=False)
     # Add a column to store the attempt status (True/False)
-=======
-
-class Topic(db.Model):
-    __tablename__ = "topic"
-
-    topic_id = db.Column(db.Integer(),primary_key = True)
-    topic = db.Column(db.String())
-    qn_id = db.Column(db.String(), db.ForeignKey('questions.ques_id' , ondelete='CASCADE'))
->>>>>>> 9d33ca78f50f4c1b213f097ef1dbf57012ebcd4d
 
 
 # class indi_perf(db.Model):

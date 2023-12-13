@@ -10,12 +10,7 @@ from flask_jwt_extended import JWTManager
 from application.models import *
 from application.userAPI import *
 from application.questionAPI import *
-<<<<<<< HEAD
 from application.topicsApi import *
-=======
-from application.topicAPI import *
-
->>>>>>> 9d33ca78f50f4c1b213f097ef1dbf57012ebcd4d
 
 
 CELERY_BROKER_URL = "redis://localhost:6379/1"
@@ -77,13 +72,8 @@ with app.app_context():
 from application.login import *
 
 api.add_resource(UserApi,"/api/user_profile")
-<<<<<<< HEAD
 api.add_resource(QuestionsAPI,"/api/questions","/api/questions/<topic>")
 api.add_resource(TopicsAPI,"/api/topics")
-=======
-api.add_resource(QuestionsAPI,"/api/questions","/api/questions/<qn_id>")
-api.add_resource(TopicAPI,"/api/topic/<topic_id>")
->>>>>>> 9d33ca78f50f4c1b213f097ef1dbf57012ebcd4d
 
 if __name__ == "__main__":
     # with app.app_context():

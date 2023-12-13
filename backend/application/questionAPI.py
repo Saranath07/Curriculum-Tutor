@@ -3,7 +3,7 @@ from flask import request
 from .database import db
 import uuid
 from flask import jsonify
-from .models import Questions, Topic
+from .models import Questions, Topics
 from flask_jwt_extended import jwt_required, verify_jwt_in_request, get_jwt_identity
 from flask_jwt_extended.utils import decode_token
 import os
