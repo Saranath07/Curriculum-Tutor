@@ -17,6 +17,7 @@ class Questions(db.Model):
     ques_id = db.Column(db.Integer(),primary_key=True)
     question = db.Column(db.String())
     ques_img = db.Column(db.Text())
+    
     topic = db.Column(db.String())
     ques_type = db.Column(db.String())
     options = db.Column(db.String())
@@ -31,6 +32,15 @@ class Performance(db.Model):
     score = db.Column(db.Integer())
     topic_id = db.Column(db.String())
     mastery = db.Column(db.String())
+
+
+class Topic(db.Model):
+    __tablename__ = "topic"
+
+    topic_id = db.Column(db.Integer(),primary_key = True)
+    topic = db.Column(db.String())
+    qn_id = db.Column(db.String(), db.ForeignKey('questions.ques_id' , ondelete='CASCADE'))
+
 
 # class indi_perf(db.Model):
 #     __tablename__ = "indi-perf"

@@ -29,25 +29,42 @@ def register_admin():
     db.session.commit()
     return jsonify({"message":"Admin registered successfully"})
 
+# @app.route("/login",methods=["POST"])
+# def login():
+   
+#     data = request.get_json()
+#     print(data)
+   
+#     email = data.get("email")
+#     password = data.get("password")
+    
+#     user = Users.query.filter_by(email=email).first()
+#     print(user)
+#     if not user:
+#         return jsonify({"error":" Please signup"}), 404
+    
+#     if check_password_hash(user.password,password):
+#         # user.lastseen=time.time()
+#         db.session.commit()
+#         access_token = create_access_token(identity= user.public_id,additional_claims  = {'role':user.role})
+#         return jsonify({"access_token":access_token, "username":user.user_name,"role":user.role}),200
+#     else:
+#         return jsonify({"error":" Could not login"}), 404
+
 @app.route("/login",methods=["POST"])
 def login():
    
     data = request.get_json()
     print(data)
-   
-    email = data.get("email")
+    # return {"hello" : data.get("username")}
+    uname = data.get("username")
     password = data.get("password")
-    
-    user = Users.query.filter_by(email=email).first()
-    print(user)
-    if not user:
-        return jsonify({"error":" Please signup"}), 404
+    user = Users.query.filter_by(user_name=uname).first()
     
     if check_password_hash(user.password,password):
-        # user.lastseen=time.time()
+        user.lastseen=time.time()
         db.session.commit()
         access_token = create_access_token(identity= user.public_id,additional_claims  = {'role':user.role})
         return jsonify({"access_token":access_token, "username":user.user_name,"role":user.role}),200
     else:
-        return jsonify({"error":" Could not login"}), 404
-
+        return jsonify({"error":" Could Not Login"})
