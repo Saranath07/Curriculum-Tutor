@@ -3,7 +3,7 @@ from flask import request
 from .database import db
 import uuid
 from flask import jsonify
-from .models import Questions
+from .models import Questions, Topic
 from flask_jwt_extended import jwt_required, verify_jwt_in_request, get_jwt_identity
 from flask_jwt_extended.utils import decode_token
 import os
@@ -11,20 +11,20 @@ import os
 
 
 qn_fields = {
-    "ques_id":fields.Integer,
+
    "topic": fields.String,
    "question": fields.String,
-       "ques_img" : fields.String,
-           "ques_type": fields.String,
-           "options": fields.String,
-        # "correct_options": fields.String
-
+   "ques_img" : fields.String,
+   "ques_type": fields.String,
+   "options": fields.String,
+   "correct_options": fields.String
+  
 }
 
 class QuestionsAPI(Resource):
     @jwt_required()
     @marshal_with(qn_fields)
-    def get(self,topic):
+    def get(self,qn_id):
         current_user= get_jwt_identity()
 
         token = request.headers.get('Authorization').split()[1]
@@ -34,7 +34,7 @@ class QuestionsAPI(Resource):
         
         
             
-        qn = Questions.query.filter_by(topic= topic).all()
+        qn = Questions.query.filter_by(qn_id= qn_id).first()
         print(qn)
         return qn
       
@@ -64,13 +64,20 @@ class QuestionsAPI(Resource):
             db.session.add(ques)
           
             db.session.commit()
+
+            
+            sql4 = Topic(topic = ques.topic, qn_id = ques.ques_id)
+            db.session.add(sql4)
+            db.session.commit()
+   
+
             return {"message" : "Question created Successfully"}, 200
         else:
             return {'message' : "You are not Authorized to perform this action"}, 400
         
     @jwt_required()
-    def put(self,topic):
-        qn_id = topic
+    def put(self,qn_id):
+        
         current_user = get_jwt_identity()
         token = request.headers.get('Authorization').split()[1]
         decoded_token = decode_token(token)
@@ -89,8 +96,8 @@ class QuestionsAPI(Resource):
         return "Question edited successfully"
     
         
-    def delete(self, topic):
-        qn_id = topic
+    def delete(self, qn_id):
+  
      
         verify_jwt_in_request()
         current_user = get_jwt_identity()
