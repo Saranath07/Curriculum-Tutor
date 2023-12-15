@@ -25,12 +25,13 @@ class EvaluateAPI(Resource):
         data = request.get_json()
 
         studentOption = data['studentOption']
+        
 
         current_user = Users.query.filter_by(public_id=current_user).first()
         print(current_user.id)
         
         print(question.correct_options, studentOption)
-        if question.correct_options == studentOption:
+        if question.correct_options == studentOption.strip():
             stud_data = AttemptedQuestions(user_id = current_user.id, ques_id = id, attempted = True,
                                            status = True)
             try:

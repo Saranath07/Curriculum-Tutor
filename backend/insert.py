@@ -16,7 +16,7 @@ topic_data = {
 # Question data
 question_data = {
     "question": "What is the fractional value?",
-    "options": "$\\dfrac{1}{3}$, $\\dfrac{4}{8}$, $\\dfrac{2}{9}$",
+    "options": "$\\dfrac{1}{3}$, $\\dfrac{1}{2}$, $\\dfrac{2}{9}$",
     "correct_options": "$\\dfrac{1}{2}$",
     "topic": "Topic 1",
     "ques_img" : None,
