@@ -3,6 +3,8 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask import jsonify, request
 from .models import Questions, Topics, AttemptedQuestions
 from flask_jwt_extended.utils import decode_token
+from .database import db
+
 
 class TopicsAPI(Resource):
     @jwt_required()
@@ -61,3 +63,27 @@ class TopicsAPI(Resource):
             
             return formatted_topics, 200
         return jsonify({"message": "You are not authorized to perform these actions"}), 400
+    
+    @jwt_required()
+    def post(self):
+        token = request.headers.get('Authorization').split()[1]
+        # print(token)
+        
+        # bearer, token
+        decoded_token = decode_token(token)
+
+        if not decode_token:
+            return "You are not authorized", 400
+        
+        data = request.get_json()
+        
+        topic_name = data['topicName']
+
+        topic = Topics(topic_name = topic_name)
+
+        db.session.add(topic)
+
+        db.session.commit()
+
+        return "Topic Added Successfully"
+

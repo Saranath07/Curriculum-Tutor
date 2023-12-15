@@ -52,6 +52,16 @@ class AttemptedQuestions(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete='CASCADE'))
     ques_id = db.Column(db.Integer, db.ForeignKey('questions.ques_id', ondelete='CASCADE'))
     attempted = db.Column(db.Boolean, default=False)
+    status = db.Column(db.Boolean, default=None)
+
+    # Add a unique constraint on user_id and ques_id
+    __table_args__ = (db.UniqueConstraint('user_id', 'ques_id'),)
+
+    def __init__(self, user_id, ques_id, attempted, status):
+        self.user_id = user_id
+        self.ques_id = ques_id
+        self.attempted = attempted
+        self.status = status
     # Add a column to store the attempt status (True/False)
 
 

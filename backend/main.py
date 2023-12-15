@@ -1,3 +1,5 @@
+#!/bin/python3
+
 import os
 from flask import Flask
 from flask_restful import Api
@@ -11,6 +13,8 @@ from application.models import *
 from application.userAPI import *
 from application.questionAPI import *
 from application.topicsApi import *
+from application.evaluateAPI import *
+
 
 
 CELERY_BROKER_URL = "redis://localhost:6379/1"
@@ -72,8 +76,10 @@ with app.app_context():
 from application.login import *
 
 api.add_resource(UserApi,"/api/user_profile")
-api.add_resource(QuestionsAPI,"/api/questions","/api/questions/<topic>")
+api.add_resource(QuestionsAPI,"/api/questions","/api/questions/<id>")
 api.add_resource(TopicsAPI,"/api/topics")
+api.add_resource(EvaluateAPI,"/api/evaluate/<id>")
+
 
 if __name__ == "__main__":
     # with app.app_context():

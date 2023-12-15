@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="!erString.value" class="min-h-screen flex items-center justify-center">
+    <div v-if="!userString.value" class="min-h-screen flex items-center justify-center">
       <div class="flex flex-wrap items-center justify-center">
         <div v-for="(topic, topicIndex) in topics" :key="topicIndex">
           <div
