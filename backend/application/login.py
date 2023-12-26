@@ -27,6 +27,7 @@ def register_admin():
     new_user = Users(public_id = str(uuid.uuid4()),password = hash_pwd ,user_name = data['username'],email=data['email'],role='admin')
     db.session.add(new_user)
     db.session.commit()
+    new_user.pic = f"/static/user/{new_user.pulic_id}"
     return jsonify({"message":"Admin registered successfully"})
 
 @app.route("/login",methods=["POST"])
@@ -47,7 +48,7 @@ def login():
         # user.lastseen=time.time()
         db.session.commit()
         access_token = create_access_token(identity= user.public_id,additional_claims  = {'role':user.role})
-        return jsonify({"access_token":access_token, "username":user.user_name,"role":user.role}),200
+        return jsonify({"access_token":access_token, "username":user.user_name,"role":user.role, "img" : user.pic}),200
     else:
         return jsonify({"error":" Could not login"}), 404
 

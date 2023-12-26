@@ -14,6 +14,8 @@ from application.userAPI import *
 from application.questionAPI import *
 from application.topicsApi import *
 from application.evaluateAPI import *
+from application.performanceAPI import *
+
 
 
 
@@ -74,11 +76,13 @@ with app.app_context():
 
 
 from application.login import *
+from application.controllers import *
 
 api.add_resource(UserApi,"/api/user_profile")
 api.add_resource(QuestionsAPI,"/api/questions","/api/questions/<id>")
 api.add_resource(TopicsAPI,"/api/topics")
 api.add_resource(EvaluateAPI,"/api/evaluate/<id>")
+api.add_resource(PerformanceAPI, "/api/performance")
 
 
 if __name__ == "__main__":

@@ -43,8 +43,9 @@ class Performance(db.Model):
     perf_id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.String(), db.ForeignKey('users.id', ondelete='CASCADE'))
     score = db.Column(db.Integer())
-    topic_id = db.Column(db.String())
-    mastery = db.Column(db.String())
+    topic_id = db.Column(db.Integer, db.ForeignKey('topics.id', ondelete='CASCADE'))
+    no_of_questions = db.Column(db.Integer())
+    mastery = db.Column(db.Boolean, default=None)
 
 class AttemptedQuestions(db.Model):
     __tablename__ = "attempted_questions"
@@ -53,6 +54,7 @@ class AttemptedQuestions(db.Model):
     ques_id = db.Column(db.Integer, db.ForeignKey('questions.ques_id', ondelete='CASCADE'))
     attempted = db.Column(db.Boolean, default=False)
     status = db.Column(db.Boolean, default=None)
+    options = db.Column(db.String())
 
     # Add a unique constraint on user_id and ques_id
     __table_args__ = (db.UniqueConstraint('user_id', 'ques_id'),)
@@ -63,6 +65,9 @@ class AttemptedQuestions(db.Model):
         self.attempted = attempted
         self.status = status
     # Add a column to store the attempt status (True/False)
+        
+
+
 
 
 # class indi_perf(db.Model):

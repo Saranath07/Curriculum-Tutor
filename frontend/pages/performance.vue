@@ -25,22 +25,52 @@
   </template>
   
   <script setup>
-  import { ref, onMounted } from "vue";
+  import { ref, onMounted, watch } from "vue";
   import { Chart, registerables } from 'chart.js';
+
+  import axios from 'axios';
+
+  const userString = localStorage.getItem('user');
+  const user = JSON.parse(userString);
+  axios.defaults.baseURL = 'http://localhost:5000';
+  const token = user.access_token;
+ 
+console.log(`Token : ${token}`)
+
+const performanceData = ref([]);
+
+if (!token){
+  router.push("/login")
+}
   Chart.register(...registerables);
   
-  const performanceData = ref([
-    { name: 'Topic 1', questionsSolved: 25, mastered: true },
-    { name: 'Topic 2', questionsSolved: 20, mastered: false },
-    { name: 'Topic 3', questionsSolved: 18, mastered: true },
-    // Add more topics as needed
-  ]);
+  async function getPerformance(){
+      try{
+        
+        const response = await  axios.get(`/api/performance`,  {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+        
+      })
+      performanceData.value = response.data
+      console.log(response.data)
+
+      }catch(e){
+        error.data = e;
+      }
+  }
+console.log(performanceData)
   
   let barChart;
   
   onMounted(() => {
-    createBarChart();
+    getPerformance();
   });
+
+  watch(performanceData, () => {
+  createBarChart();
+});
   
   function createBarChart() {
     const canvas = document.getElementById('barChart');
@@ -56,6 +86,8 @@
         borderWidth: 1
       }]
     };
+    console.log("chart data")
+    console.log(chartData)
   
     const chartOptions = {
       scales: {

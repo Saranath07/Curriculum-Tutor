@@ -55,7 +55,8 @@
               username : response.data.username,
               role : response.data.role,
               admin : false,
-              access_token : response.data.access_token
+              access_token : response.data.access_token,
+              imgUrl : response.data.img
             }
             console.log(user)
             

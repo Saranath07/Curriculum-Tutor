@@ -167,6 +167,7 @@ if (!token){
         status.value = response.data.status
         correctOption.value = response.data.correct_option
       }
+      
     }catch(e){
       error.value = e
       console.log(e)
@@ -237,7 +238,7 @@ function isIncorrectOption(option) {
         
       })
       console.log(response.data)
-
+      location.reload()
       
     }catch(e){
       error.value = 1
