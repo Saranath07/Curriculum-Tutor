@@ -59,11 +59,12 @@ class AttemptedQuestions(db.Model):
     # Add a unique constraint on user_id and ques_id
     __table_args__ = (db.UniqueConstraint('user_id', 'ques_id'),)
 
-    def __init__(self, user_id, ques_id, attempted, status):
+    def __init__(self, user_id, ques_id, attempted, status, options):
         self.user_id = user_id
         self.ques_id = ques_id
         self.attempted = attempted
         self.status = status
+        self.options = options
     # Add a column to store the attempt status (True/False)
         
 

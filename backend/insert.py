@@ -15,7 +15,7 @@ for i in range(1, 2):
         "username" : f"example{i}",
         "email" : f"me@example{i}.com",
         "password" : "1234",
-        "imgUrl" : "/static/user/1/ProfilePic.jpg"
+        "imgUrl" : f"/static/user/{i}/ProfilePic.jpg"
     }
     users.append(json)
 topic_data = {
@@ -41,7 +41,7 @@ for i in range(1, 6):
         "options" : opts.read(),
         "correct_options" : crt_opts.read(),
         "topic" : "Topic 1",
-        "ques_img" : "/static/questions/1.png",
+        "ques_img" : f"/static/questions/{i}.png",
         "ques_type" : "Medium"
     }
     questions.append(json)
@@ -60,9 +60,9 @@ def make_api_request(endpoint, data, headers=None):
 
 
 # Create user
-# for user in users:
-#     user_response = make_api_request(user_endpoint, user)
-#     print("User creation response:", user_response.json())
+for user in users:
+    user_response = make_api_request(user_endpoint, user)
+    print("User creation response:", user_response.json())
 
 # Login to obtain access token
 login_response = make_api_request(login_endpoint, login_data)
