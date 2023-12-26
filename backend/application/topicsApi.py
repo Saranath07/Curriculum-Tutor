@@ -41,13 +41,21 @@ class TopicsAPI(Resource):
                         ques_id = question.ques_id
                     ).first()
                     print(attemptQues)
-                    
-                    formatted_questions.append(
-                        {
-                            'qid' : question.ques_id,
-                            'attempted' : attemptQues.attempted
-                        }
-                    )
+                    if attemptQues:
+                        formatted_questions.append(
+                            {
+                                'id' : question.ques_id,
+                                'attempted' : attemptQues.attempted
+                            }
+                        )
+                    else:
+                        formatted_questions.append(
+                            {
+                                'id' : question.ques_id,
+                                'attempted' : False
+                            }
+                        )
+
 
                 # Format the current topic
                 formatted_topic = {

@@ -52,12 +52,13 @@ console.log(`Token : ${token}`);
 
 async function getQuestions() {
   try {
-    const response = await axios.get(`/api/questions/1`, {
+    const response = await axios.get(`/api/topics`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
     });
     console.log(response.data[0]);
+    topics.value = response.data
   } catch (e) {
     console.log(e);
   }
@@ -71,36 +72,7 @@ onMounted(() => {
   getQuestions();
 });
 
-topics.value = [
-  {
-    tid : 1,
-    name: 'Topic 1',
-    questions: [
-      {
-        id: 1,
-        attempted: true
-      },
-      {
-        id: 2,
-        attempted: false
-      }
-    ]
-  },
-  {
-    tid : 2,
-    name: 'Topic 2',
-    questions: [
-      {
-        id: 3,
-        attempted: false
-      },
-      {
-        id: 4,
-        attempted: true
-      }
-    ]
-  }
-];
+
 
 const toggleExpand = (topic) => {
   const index = expandedTopics.value.indexOf(topic);

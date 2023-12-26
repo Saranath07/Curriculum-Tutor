@@ -10,7 +10,7 @@
   <div v-if="attempted">
     <article class="prose prose-md mx-auto flex flex-col gap-4">
         <MDC :value="question" tag="article" />
-        <img :src="imgPath" class="question-image" alt="Question Picture" >
+        <img v-if="showImg" :src="imgPath" class="question-image" alt="Question Picture" >
         <div class="flex gap-4" v-for="option in options" :key="option">
           <input
             type="radio"
@@ -57,7 +57,7 @@
     <div v-else class="page-container">
       <article class="prose prose-md mx-auto flex flex-col gap-4">
         <MDC :value="question" tag="article" />
-        <img :src="imgPath" class="question-image" alt="Question Picture" >
+        <img v-if="showImg" :src="imgPath" class="question-image" alt="Question Picture" >
         <div class="flex gap-4" v-for="option in options">
           <input type="radio" :id="option" name="option" :value="option" v-model="selectedOption">
           <label :for="option">
@@ -136,6 +136,7 @@ const userString = localStorage.getItem('user');
   const error = ref(0)
   const selectedOption = ref("")
   const correctOption = ref("")
+  const showImg = ref(false);
   
   // Access the access token property from the user object
   const token = user.access_token;
@@ -161,6 +162,10 @@ if (!token){
 
       ques = response.data.question
       opt = response.data.options
+      if (response.data.ques_img){
+        imgPath.value = `http://localhost:5000${response.data.ques_img}`
+        showImg.value = true
+      }
       attempted.value = response.data.attempted
       console.log(response.data.att)
       if (attempted.value){
@@ -184,7 +189,7 @@ console.log(ques)
 
   
   
-  imgPath.value = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQttuTvK6dGgaC7yHWk1bPmCTtuo-6-b0kB-SPRz1EFPUFhZaqZRrV_LJNKaf8c8-cnxY&usqp=CAU"
+  // imgPath.value = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQttuTvK6dGgaC7yHWk1bPmCTtuo-6-b0kB-SPRz1EFPUFhZaqZRrV_LJNKaf8c8-cnxY&usqp=CAU"
 
   console.log("Question:", q_no.value);
   

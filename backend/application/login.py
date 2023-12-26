@@ -14,7 +14,8 @@ from flask_jwt_extended import  jwt_required, create_access_token
 def register_user():
     data = request.get_json()
     hash_pwd = generate_password_hash(data['password'],method = 'pbkdf2:sha256')
-    new_user = Users(public_id = str(uuid.uuid4()),user_name = data['username'],password = hash_pwd,email=data['email'], role='user')
+    new_user = Users(public_id = str(uuid.uuid4()),user_name = data['username'],password = hash_pwd,email=data['email'], role='user',
+                     pic = data['imgUrl'])
     db.session.add(new_user)
     db.session.commit()
     return jsonify({"message":"User registered successfully", "user" : new_user.user_name})
