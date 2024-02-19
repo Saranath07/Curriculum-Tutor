@@ -1,3 +1,2 @@
-pnpm i
-
-pnpm add remark-math rehype-katex
+flask==3.0.0
+werkseug==3.0.1

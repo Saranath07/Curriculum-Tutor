@@ -18,9 +18,17 @@ for i in range(1, 2):
         "imgUrl" : f"/static/user/{i}/ProfilePic.jpg"
     }
     users.append(json)
-topic_data = {
+topic_data = [
+    {
     "topicName": "Topic 1"
+},
+ {
+    "topicName": "Topic 2"
+},
+ {
+    "topicName": "Topic 3"
 }
+]
 
 # Question data
 # question_data = {
@@ -32,15 +40,20 @@ topic_data = {
 #     "ques_type" : 'Easy'
 # }
 questions = []
-for i in range(1, 6):
+for i in range(1, 21):
+    topic = "Topic 3"
     ques = open(f"/home/saranath/Curriculum-Tutor/questions/{i}.md", "r")
     opts = open(f"/home/saranath/Curriculum-Tutor/options/{i}.csv", "r")
     crt_opts = open(f"/home/saranath/Curriculum-Tutor/correct_options/{i}.md", "r")
+    if i < 9:
+        topic = "Topic 1"
+    elif i >= 9 and i < 17:
+        topic = "Topic 2"
     json = {
         "question" : ques.read(),
         "options" : opts.read(),
         "correct_options" : crt_opts.read(),
-        "topic" : "Topic 1",
+        "topic" : topic,
         "ques_img" : f"/static/questions/{i}.png",
         "ques_type" : "Medium"
     }
@@ -70,8 +83,9 @@ access_token = login_response.json().get("access_token")
 headers = {"Authorization": f"Bearer {access_token}"}
 
 # Create topic
-topic_response = make_api_request(topic_endpoint, topic_data, headers=headers)
-print("Topic creation response:", topic_response.json())
+for topic in topic_data:
+    topic_response = make_api_request(topic_endpoint, topic, headers=headers)
+    print("Topic creation response:", topic_response.json())
 
 # # Create question
 for question in questions:

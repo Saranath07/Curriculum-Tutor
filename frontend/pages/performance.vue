@@ -6,6 +6,7 @@
           <tr>
             <th>Topic Name</th>
             <th>Number of Questions Solved</th>
+            <th>Number of correct answers</th>
             <th>Mastered</th>
           </tr>
         </thead>
@@ -13,6 +14,7 @@
           <tr v-for="(topic, index) in performanceData" :key="index">
             <td>{{ topic.name }}</td>
             <td>{{ topic.questionsSolved }}</td>
+            <td>{{ topic.correct_questions }}</td>
             <td :class="{ mastered: topic.mastered }">{{ topic.mastered ? 'Yes' : 'No' }}</td>
           </tr>
         </tbody>
@@ -122,12 +124,12 @@ console.log(performanceData)
   background-color: #f2f2f2;
 }
 
-.performance-table td:nth-child(3).mastered {
+.performance-table td:nth-child(4).mastered {
   color: green;     /* Color for mastered topics */
   font-weight: bold;
 }
 
-.performance-table td:nth-child(3):not(.mastered) {
+.performance-table td:nth-child(4):not(.mastered) {
   color: red;       /* Color for non-mastered topics */
   font-weight: bold;
 }
