@@ -158,7 +158,7 @@ if (!token){
         },
         
       })
-      console.log(response.data)
+      console.log(`Response Data : ${response.data.ques_img}`)
 
       ques = response.data.question
       opt = response.data.options
@@ -179,7 +179,6 @@ if (!token){
     }
 
 
-console.log(ques)
 
 // onMounted(() => {
 //   // This code will be executed when the component is mounted

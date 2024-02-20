@@ -14,6 +14,9 @@ dependencies:
   marked:
     specifier: ^11.1.0
     version: 11.1.0
+  pnpm:
+    specifier: ^8.15.3
+    version: 8.15.3
 
 devDependencies:
   '@nuxt/devtools':
@@ -6688,6 +6691,12 @@ packages:
       mlly: 1.4.2
       pathe: 1.1.1
     dev: true
+
+  /pnpm@8.15.3:
+    resolution: {integrity: sha512-3YXNbspkF8b3PbMroetHZ/+0y6T1vwcnhGciyStrnlaizCGLEThbvCsh8YoWpn2nes6um2Gg9WoWQ7JeH7amBQ==}
+    engines: {node: '>=16.14'}
+    hasBin: true
+    dev: false
 
   /portfinder@1.0.32:
     resolution: {integrity: sha512-on2ZJVVDXRADWE6jnQaX0ioEylzgBpQk8r55NE4wjXW1ZxO+BgDlY6DXwj20i0V8eB4SenDQ00WEaxfiIQPcxg==}
