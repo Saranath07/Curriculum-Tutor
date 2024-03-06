@@ -1,38 +1,59 @@
-from flask_restful import Resource, marshal_with, fields
+from flask_restful import Resource
 from flask import request
 from .database import db
-import uuid
-from flask import jsonify
-from .models import Questions, Topics, AttemptedQuestions, Users, Performance
-from flask_jwt_extended import jwt_required, verify_jwt_in_request, get_jwt_identity
+from .models import Topics, AttemptedQuestions, Users, Performance
+from flask_jwt_extended import jwt_required, get_jwt_identity
 from flask_jwt_extended.utils import decode_token
 import os
+from collections import defaultdict
+import math
 
-'''
-The logic for mastery detection is as follows:
 
-w: window size ( w can be set as 8)
-h: accuracy threshold (h can be set as 0.75)
 
-if the number of responses by a student for a topic  >= w:
-    consider the number of correct responses (c) in the last w responses
-    compute f = c/w
-    if f>h:
-     mastery = True
 
-'''
 
-def masteryDetection(userPerf, w, h):
-     
+def user_topic_correctness(user, topic_id, w):
+  
+    """
+    Calculates the number of correct answers for the last w attempted questions for each topic of the user.
+
+    Args:
+        user: The user object.
+        w: The number of most recent questions to consider.
+
+    Returns:
+        A dictionary where keys are topics (Topic objects) and values are integers representing 
+        the number of correct answers in the last w attempted questions for each topic.
+
+    """
+
+    # Use defaultdict to create an empty dictionary with Topic objects as keys
+    s = 0
+
+    # Filter attempted questions by user
     
-    n = userPerf.no_of_questions
-    c = userPerf.score
+    attempted_ques = AttemptedQuestions.query.filter_by(user_id=user.id, topic_id = topic_id).all()
 
-    if n >= w:
-        f = c / w
-        if f > h:
-            return True
+    attempted_ques = list(reversed(attempted_ques))
+    print(attempted_ques)
+    # Iterate through each attempted question
+    i = 0
+    for question in attempted_ques:
+        # Check if it falls within the last w questions based on a counter
+        if i < w:
+            s += question.status
+            i += 1
 
+    return s
+
+
+
+def masteryDetection(user, topic_id, w, h):
+    
+    u = user_topic_correctness(user, topic_id, w)
+    print(u, math.ceil(w * h))
+    if u > math.ceil(w * h):
+        return True
     return False
 
 class PerformanceAPI(Resource):
@@ -55,7 +76,8 @@ class PerformanceAPI(Resource):
 
         for userPerf in userPerfs:
             topic = Topics.query.filter_by(id = userPerf.topic_id).first()
-            userPerf.mastery = masteryDetection(userPerf, w=6, h=0.75)
+            userPerf.mastery = masteryDetection(user, topic.id, w=6, h=0.75)
+    
             json = {
                 "name" : topic.topic_name,
                 "questionsSolved" : userPerf.no_of_questions,

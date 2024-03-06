@@ -34,7 +34,7 @@ class EvaluateAPI(Resource):
         print(question.correct_options, studentOption)
         if question.correct_options == studentOption.strip():
             stud_data = AttemptedQuestions(user_id = current_user.id, ques_id = id, attempted = True, status = True, 
-                                           options = studentOption)
+                                           options = studentOption, topic_id = question.topic_id)
             try:
                 db.session.add(stud_data)
                 exist_perf = Performance.query.filter_by(user_id = current_user.id, topic_id = question.topic_id).first()
@@ -50,7 +50,7 @@ class EvaluateAPI(Resource):
                 return "You cannot attempt once again", 404
         else:
             stud_data = AttemptedQuestions(user_id = current_user.id, ques_id = id, attempted = True, 
-                                           status = False, options = studentOption)
+                                           status = False, options = studentOption, topic_id = question.topic_id)
             try:
                 db.session.add(stud_data)
                 db.session.add(stud_data)
